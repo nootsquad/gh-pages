@@ -9,15 +9,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		
 		<script type="text/javascript">
-			window.onbeforeunload = function() {
-			    var answer = confirm("do you enjoy dank meymeys")
-			    if (answer){
-			
-			        alert("trigger");
-			    }
-			    else{
-			        window.location = "http://triggering.space";
-			    }
+			window.onbeforeunload = function(){
+			  return 'Are you sure you want to leave?';
 			};
 		</script>
 	</head>
