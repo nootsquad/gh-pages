@@ -2,6 +2,7 @@
 	<head>
 		<title>Trigger Benchmark</title>
 		<style>
+			@import url(https://fonts.googleapis.com/css?family=Fontdiner+Swanky);
 			body, html
 			{
 				margin: 0;
@@ -31,6 +32,13 @@
 				top: 0;
 				left: 0;
 			}
+
+			#counter
+			{
+				color: white;
+				font-family: 'Fontdiner Swanky', cursive;
+			}
+				
 		</style>
 		<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="   crossorigin="anonymous"></script>
 	</head>
@@ -43,7 +51,6 @@
 
 			setInterval(updateTrigger, 1);
 
-
 			function updateTrigger()
 			{
 				var color = "rgb("+Math.floor(Math.random()*200+100)+","+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+")";
@@ -53,24 +60,25 @@
 
 				$("#triggerbox").append("<div class=\"triggerrect\" style=\"width: "+side+"px; height: "+side+"; top: "+prevy+"; left: "+prevx+"; background-color: "+color+"\"></div>");
 
-				$(".triggerrect").each(function(){
-					$(this).offset({left: ($(this).offset().left+(Math.random()*100-25))%(window.innerWidth), top: ($(this).offset().top+(Math.random()*100-25))%(window.innerHeight)});
+				$("#triggerbox").children().each(function(){
+					$(this).offset({left: ($(this).offset().left+(Math.random()*100-25))%(window.innerWidth+20)-20, top: ($(this).offset().top+(Math.random()*100-25))%(window.innerHeight+20)-20});
 				});
 
 				$("#triggerbox").css({backgroundColor: color});
 
-				mscounter++;
 				if(mscounter%100 == 0)
 				{
 					seccounter++;
 					mscounter = 0;
 					$("#counter").text("Level "+seccounter);
+					$("#triggerbox").append("<iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/cU8HrO7XuiE?autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>");
 				}
+				
+				mscounter++;
 
 			}
 		</script>
 		<div id="triggerbox"></div>
 		<h1 id="counter">Level 0</h1>
-		<iframe width="420" height="315" src="https://www.youtube.com/embed/cU8HrO7XuiE?autoplay=1" frameborder="0" allowfullscreen></iframe>
 	<body>
 </html>
