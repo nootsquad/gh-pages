@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Happy America Day!</title>
+		<link rel="icon" type="img/ico" href="/favicon.ico">
 		<style>
 			body {
 				background: url("stars.png");
@@ -16,12 +17,12 @@
 				left: 0;
 				z-index: 10;
 			}
-			#skyworks, #spaceworks, #cityworks {
+			#skyworks, #spaceworks, #cityworks, #coveralls {
 				position: absolute;
 				top: 0;
 				left: 0;
 				height: 100vh;
-				width: 100vh;
+				width: 100vw;
 			}
 			
 			#skyworks {
@@ -36,6 +37,11 @@
 				z-index: 20;
 			}
 			
+			#coveralls {
+				z-index: 100;
+			}
+			
+			
 			#flag {
 				opacity: 0.5;
 				position: absolute;
@@ -43,6 +49,19 @@
 				left: 0;
 				z-index: 1;
 			}
+			
+			#teamamerica, #apollo {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 0;
+			}
+			
+			#apollo {
+				z-index: 30;
+				opacity: 0.8;
+			}
+			
 			#music{
 				opacity: 0;
 				z-index: -1;
@@ -71,6 +90,9 @@
 		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script>
+		
+			var inhibitFireworks = false;
+			
 			$(document).ready(function(){
 				if($(window).width()/$(window).height() > 16/9) {
 					$("#flag").width($(window).width());
@@ -85,7 +107,14 @@
 				}
 				
 				var counter = 0;
+				var fireworkRate = 2000;
 				function shootFirework(){
+				
+					if(inhibitFireworks) {
+						setTimeout(shootFirework, fireworkRate*Math.random())
+						return;
+					}
+					
 					var id = counter++;
 					var targetLeft =  $(window).width()*Math.random();
 					var targetTop = $(window).height()/3*Math.random()+$(window).height()/4;
@@ -129,9 +158,18 @@
 							$("#firework-"+id).remove();
 						});
 					});
-					setTimeout(shootFirework, 2000*Math.random())
+					setTimeout(shootFirework, fireworkRate*Math.random())
 				}
 				setTimeout(shootFirework, 2000);
+				
+				fireworkIncrement = -100;
+				var fireworkInterval = setInterval(function(){
+					fireworkRate = fireworkRate + fireworkIncrement;
+					if(fireworkRate < 0 || fireworkRate > 2000) {
+						fireworkIncrement = -fireworkIncrement;
+						fireworkRate = fireworkRate + fireworkIncrement
+					}
+				}, 60000);
 				
 				function sendEagle() {
 					var id = counter++;
@@ -246,11 +284,73 @@
 						missileSound.play();
 					}, 54000);
 					
-					setTimeout(armadaDisplay, 1038000);
+					setTimeout(armadaDisplay, 1345000);
 				}
-				setTimeout(armadaDisplay, 217000);
+				setTimeout(armadaDisplay, 307000);
 				
+				function startTeamAmerica() {
+					$("body").append("<iframe id=\"teamamerica\" type=\"text/html\" src=\"http://www.youtube.com/embed/U1mlCPMYtPk?autoplay=1&showinfo=0&controls=0&enablejsapi=1\" frameborder=\"0\" allowfullscreen></iframe>");
+					if($(window).width()/$(window).height() > 16/9) {
+						$("#teamamerica").width($(window).width());
+						$("#teamamerica").height($(window).width()*9/16);
+					} else {
+						$("#teamamerica").height($(window).height());
+						$("#teamamerica").width($(window).height()*16/9);
+					}
+					
+					var teamamerica = player = new YT.Player("teamamerica", {
+						events: {
+							"onReady": onTeamAmericaReady
+						}
+					});
+					
+					function onTeamAmericaReady() {
+						// Mute!
+						teamamerica.mute();
+					}
+					
+					setTimeout(function(){
+						$("#teamamerica").remove();
+					}, 180000);
+					
+					setTimeout(startTeamAmerica, 1345000);
+				};
+				setTimeout(startTeamAmerica, 672000);
+				
+				function startApollo() {
+					inhibitFireworks = true;
+					$("body").append("<iframe id=\"apollo\" type=\"text/html\" src=\"http://www.youtube.com/embed/XSLRMdYSA9M?start=45&autoplay=1&showinfo=0&controls=0&enablejsapi=1\" frameborder=\"0\" allowfullscreen></iframe>");
+					if($(window).width()/$(window).height() > 16/9) {
+						$("#apollo").width($(window).width());
+						$("#apollo").height($(window).width()*9/16);
+					} else {
+						$("#apollo").height($(window).height());
+						$("#apollo").width($(window).height()*16/9);
+					}
+					
+					setTimeout(function(){
+						$("#apollo").attr("src", "http://www.youtube.com/embed/XSLRMdYSA9M?start=87&autoplay=1&showinfo=0&controls=0&enablejsapi=1");
+						setTimeout(function(){
+							$("#apollo").attr("src", "http://www.youtube.com/embed/XSLRMdYSA9M?start=109&autoplay=1&showinfo=0&controls=0&enablejsapi=1");
+							setTimeout(function(){
+								$("#apollo").attr("src", "http://www.youtube.com/embed/sTBIr65cL_E?start=200&autoplay=1&showinfo=0&controls=0&enablejsapi=1");
+								setTimeout(function(){
+									$("#apollo").attr("src", "http://www.youtube.com/embed/HCt1BwWE2gA?autoplay=1&showinfo=0&controls=0&enablejsapi=1");
+								}, 10000);
+							}, 15000);
+						}, 10000);
+					}, 35000);
+					
+					setTimeout(function(){
+						$("#apollo").remove();
+						inhibitFireworks = false;
+					}, 88000);
+					
+					setTimeout(startApollo, 1345000);
+				};
+				setTimeout(startApollo, 5000);
 			});
+			
 			var tag = document.createElement('script');
 			tag.src = "https://www.youtube.com/iframe_api";
 			var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -273,6 +373,7 @@
 			
 	</head>
 	<body>
+		<div id="coveralls"></div>
 		<div id="cityworks"></div>
 		<div id="city"></div>
 		<div id="skyworks"></div>
